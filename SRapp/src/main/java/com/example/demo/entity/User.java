@@ -1,15 +1,12 @@
 package com.example.demo.entity;
 
-
 import jakarta.persistence.Column;
-//import java.time.LocalDateTime; // Import for date and time
 import java.time.LocalDate; // Import for date
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 
 @Entity
 @Table(name = "users")
@@ -48,19 +45,19 @@ public class User {
         this.username = username;
     }
 
-    public LocalDate getStartdate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setPassword(LocalDate startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEnddate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEnddate(LocalDate endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
     
@@ -71,6 +68,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    
 }
-

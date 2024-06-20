@@ -7,6 +7,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,13 +16,18 @@ import java.util.List;
 @Service
 public class EmailService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
+
+    private final UserRepository userRepository;
+    private final JavaMailSender mailSender;
 
     @Autowired
-    private JavaMailSender mailSender;
+    public EmailService(UserRepository userRepository, JavaMailSender mailSender) {
+        this.userRepository = userRepository;
+        this.mailSender = mailSender;
+    }
 
-    @Scheduled(cron = "0 05 15 * * ?")  // Runs every day at 9 AM
+    @Scheduled(cron = "0 10 11 * * ?")  // Runs every day at 12:05 PM
     public void sendReminders() {
         LocalDate today = LocalDate.now();
         LocalDate upcomingDate = today.plusDays(15);  // Adjust as needed
@@ -28,20 +35,22 @@ public class EmailService {
         List<User> users = userRepository.findByEndDateBetween(today, upcomingDate);
 
         for (User user : users) {
-            sendReminderEmail(user, "Subscription Reminder", "Dear " + user.getUsername() + ",\n\nYour subscription is ending on " 
-                + user.getEnddate() + ". Please renew your subscription.\n\nThank you!");
+            try {
+                sendEmail(user.getEmail(), "Subscription Reminder", "Dear " + user.getUsername() + ",\n\nYour subscription is ending on " 
+                    + user.getEndDate() + ". Please renew your subscription.\n\nThank you!");
+                logger.info("Reminder email sent to {}", user.getEmail());
+            } catch (Exception e) {
+                logger.error("Failed to send email to {}", user.getEmail(), e);
+            }
         }
     }
 
-    public void sendReminderEmail(User user, String subject, String text) {
+    public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
+        message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
 
         mailSender.send(message);
     }
-
-
-
 }

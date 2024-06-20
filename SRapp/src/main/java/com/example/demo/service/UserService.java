@@ -8,6 +8,7 @@ import com.example.demo.repository.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -34,7 +35,6 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
     
-    
     public List<String> getUserEmails() {
         List<User> users = userRepository.findAll(); // Fetch all users from the database
         return users.stream()
@@ -42,4 +42,3 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 }
-
