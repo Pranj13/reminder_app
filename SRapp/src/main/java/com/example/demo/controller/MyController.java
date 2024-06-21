@@ -20,7 +20,7 @@ public class MyController {
     public MyController(UserService userService, EmailService emailService) {
         this.userService = userService;
         this.emailService = emailService;
-    }
+    } 
 
     @GetMapping("/")
     public String demo() {
