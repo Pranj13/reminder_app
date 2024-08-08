@@ -16,7 +16,7 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
   
-    @Bean
+    @Bean          
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -24,5 +24,5 @@ public class DemoApplication {
         dataSource.setUsername("root");
         dataSource.setPassword("Root@123");
         return dataSource;
-    }
+    }       
 }
